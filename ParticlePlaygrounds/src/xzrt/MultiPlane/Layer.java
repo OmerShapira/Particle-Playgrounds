@@ -4,6 +4,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PShape;
+import processing.core.PVector;
 
 public class Layer {
 
@@ -31,6 +32,10 @@ public class Layer {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public float[] getBoundingPolygon(){
 		return null;
 		//TODO Make
@@ -55,14 +60,48 @@ public class Layer {
 		isUpdated = true;
 	}
 
+	/**
+	 * allocate memory and calculate bounds for this layer 
+	 */
 	private void activate(){
 		if (isActive) return;
 		calculateBoundingBox();
-		g = applet.createGraphics(boundingBox[2] - boundingBox[0], boundingBox[3] - boundingBox[1], renderer);
+		g = applet.createGraphics((int) (boundingBox[2] - boundingBox[0]), (int)(boundingBox[3] - boundingBox[1]));
 	}
-
+	
+	/**
+	 * Calculates the bounding box by taking all of the shapes. works only for polygons.
+	 * 
+	 */
 	private void calculateBoundingBox() {
-		// TODO Auto-generated method stub
+		//TODO have it work for curves
+		int n = s.getVertexCount();
 		
+		PVector min = new PVector();
+		PVector max = new PVector();
+		
+		if ( n > 0 ) {
+			min.x = max.x = s.getVertexX(0);
+			min.y = max.y = s.getVertexY(0);
+		}
+
+		PVector current = new PVector();
+		for (int j = 0 ; j < n ; j++){
+			current.x = s.getVertexX(j);
+			current.y = s.getVertexY(j);
+			if (min.x > current.x){
+				min.x = current.x;
+			}
+			if (min.y > current.y){
+				min.y = current.y;
+			} 
+			if (max.x < current.x){
+				max.x = current.x;
+			}
+			if (max.y < current.y){
+				max.y = current.y;
+			}
+		}
+		boundingBox = new float[]{min.x,min.y,max.x,max.y};
 	}
 }

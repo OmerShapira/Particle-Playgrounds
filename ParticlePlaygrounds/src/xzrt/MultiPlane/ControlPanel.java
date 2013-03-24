@@ -29,7 +29,7 @@ public class ControlPanel extends PApplet {
 	}
 
 	public void draw(){
-//		background(0);
+
 		for (int i = 0; i < shapes.length ; i++){
 			PShape currentShape = shapes[i];
 			int n = currentShape.getVertexCount();
@@ -37,6 +37,10 @@ public class ControlPanel extends PApplet {
 			PVector min = new PVector();
 			PVector max = new PVector();
 			
+			//TODO remove, it lives in "Layer"
+			/** 
+			 * @see Layer
+			 */
 			//Set Beginner
 			if ( n > 0 ) {
 				min.x = max.x = currentShape.getVertexX(0);
